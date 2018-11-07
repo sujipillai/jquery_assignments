@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>jQuery Method Chaining Exceptions</title>
+<!-- <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script> -->
+<script src="jquery.js"></script>
+<style type="text/css">
+
+</style>
+</head>
+<body>
+    <h1>This is a heading<span style="display: nones;">hi</span></h1>
+    <p>This is a paragraph.</p>
+    <span style="display: nonse;">hey</span>
+    <button type="button">Start Chaining</button>
+    
+<script type="text/javascript">
+$(document).ready(function(){
+    $( "p" ).bind( "myCustomEvent", function( e, myName, myValue ) {
+  		$( this ).text( myName + ", hi there!" );
+        console.log(e);
+        console.log(myName);
+        console.log(myValue);
+  		$( "span" )
+            .stop()
+            .css( "opacity", 1 )
+            .text( "myName = " + myName )
+            .fadeIn( 30 )
+            .fadeOut( 1000 );
+        $( "h1 span" )
+            .stop()
+            .css( "opacity", 1 )
+            .text( "Hi, myName = " + myName )
+            .fadeIn( 30 )
+            .fadeOut( 1000 );
+  });
+    $( "button" ).click(function() {
+        $( "p" ).trigger( "myCustomEvent", [ "Rese" ,"suji"]);
+    });
+
+});
+</script>
+</body>
+</html>                            

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>jQuery Binding event</title>
+<!-- <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script> -->
+<script src="jquery.js"></script>
+<style type="text/css">
+
+</style>
+</head>
+<body>
+    <div id="media">
+    <div class="portlet">
+        <nav>
+            <li name="video">Video</li>
+            <li name="photos">Photos</li>
+            <li name="livestream">Livestream</li>
+            <li name="audio">Audio</li>
+        </nav>
+    </div>
+    <div class="portlet-content">
+        <section name="video">Video content<span> hi </span></section>
+        <section name="photos">Photo content<span>1 </span></section>
+        <section name="livestream">Livestream content<span> </span></section>
+        <section name="audio">Audio content<span>   </span></section>
+    </div>
+</div>
+    
+<script type="text/javascript">
+$(document).ready(function(){
+    console.log("ready func");
+    var TopicsCollection = function(name){
+        this.currentElement = name;
+    }
+    TopicsCollection.prototype.render = function(){
+        console.log("render func");
+        console.log(this.currentElement);
+        var p = '<span>Rendered : </span>';
+        //console.log($(thisSection).find('span'));
+        console.log($(this.currentElement).attr('currentElement').get(0));
+        var thisSection = $(this.currentElement).attr('currentElement').get(0);
+        console.log($(thisSection).attr('name'));
+        var currentPortlet = $(thisSection).attr('name');
+        $(thisSection).find('span').append(p).append(currentPortlet);
+    }
+
+    /* TopicsCollection.prototype.addColumn = function(){
+        console.log("prototype addcolumn collection");
+    }
+ */
+    
+    var mediaContent = $('#media');
+    var portletNavNames = [];
+    mediaContent.find('.portlet nav li').each(function(){
+        console.log("each");
+        portletNavNames.push($(this).attr('name'));
+        $(this).bind('click', function(){
+            console.log('Clicked');
+            console.log($(this).attr('name'));
+            
+        })
+    });
+    
+    console.log(portletNavNames);
+
+    for(var x in portletNavNames){
+        mediaContent.find('.portlet-content').one('isVisible', function(){
+            console.log("isVisible func");
+            var portletNav = new TopicsCollection({
+                currentElement : mediaContent.find('.portlet-content section[name="'+portletNavNames[x]+'"]')
+            });
+            portletNav.render();
+
+            portletNav.addColumn = new function(){
+                var self = portletNav;
+                console.log("inside add Column");
+                console.log(self);
+            }            
+        });
+        mediaContent.find('.portlet-content').trigger('isVisible');
+    }
+
+});
+</script>
+</body>
+</html>                            
