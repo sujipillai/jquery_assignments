@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>jQuery Input,Reset functions</title>
+<script src="jquery.js"></script>
+<style type="text/css">
+
+</style>
+</head>
+<body>
+    <div id="media">
+    <div class="tab">
+        <nav>
+            <li name="media1">media1</li>
+            <li name="media2">media2</li>
+            <li name="media3">media3</li>
+            <li name="media4">media4</li>
+        </nav>
+    </div>
+    <div class="tab-content">
+        <section name="media1">media1 content
+            <div class="form-element">
+                <div class="row">
+                        selectTypeOne<span name="selectTypeOne">
+                            <select name="cars">
+                                    <option name="xyz" value="one">One</option>
+                            </select>
+                        </span>
+                    Input one<span name="inputTypeOne"><input type="text"></span>
+                </div>
+                <br>
+                <div class="row">
+                        selectType two<span name="selectTypeTwo">
+                            <select name="fruits">                                 
+                            </select>
+                        </span>
+                    input type two<span name="inputTypeTwo"><input type="text"></span>
+                </div>
+                <br>
+                Input type three<span name="inputTypeThree"><input type="text"></span>
+            </div>
+        </section>
+        <section name="media2">media2 content
+                <div class="form-element">
+                        <div class="row">
+                                selectTypeOne<span name="selectTypeOne">
+                                    <select name="cars">
+                                    </select>
+                                </span>
+                                Radio type one<span name="radioTypeOne">
+                                        <input type="radio" name="radioOptionOne" value="RadioOne" checked="checked">
+                                        <input type="radio" name="radioOptionOne" value="RadioTwo">
+                                    </span>
+                        </div>
+                        <br>
+                        <div class="row">
+                                selectType two<span name="selectTypeTwo">
+                                    <select name="fruits">                                 
+                                    </select>
+                                </span>
+                            input type two<span name="inputTypeTwo"><input type="text"></span>
+                        </div>
+                        <br>
+                        Input type three<span name="inputTypeThree"><input type="text"></span>
+                    </div>
+        </section>
+        <section name="media3">media3 content
+                <div class="form-element">
+                        <div class="row">
+                                selectTypeOne<span name="selectTypeOne">
+                                    <select name="cars"></select>
+                                </span>
+                            Input one<span name="inputTypeOne"><input type="text"></span>
+                        </div>
+                        <br>
+                        <div class="row">
+                                selectType two<span name="selectTypeTwo">
+                                    <select name="fruits">                                 
+                                    </select>
+                                </span>
+                            input type two<span name="inputTypeTwo"><input type="text"></span>
+                        </div>
+                        <br>
+                        Input type three<span name="inputTypeThree"><input type="text"></span>
+                    </div>
+        </section>
+        <section name="media4">media4 content
+                <div class="form-element">
+                        <div class="row">
+                                selectTypeOne<span name="selectTypeOne">
+                                    <select name="cars"></select>
+                                </span>
+                            Input one<span name="inputTypeOne"><input type="text"></span>
+                        </div>
+                        <br>
+                        <div class="row">
+                                selectType two<span name="selectTypeTwo">
+                                    <select name="fruits">                                 
+                                    </select>
+                                </span>
+                            input type two<span name="inputTypeTwo"><input type="text"></span>
+                        </div>
+                        <br>
+                        Input type three<span name="inputTypeThree"><input type="text"></span>
+                    </div>
+        </section>
+    </div>
+</div>
+    
+<script type="text/javascript">
+$(document).ready(function(){
+    console.log("ready func");
+    var jsonDataList = {
+        cars:[{
+            value:"1", displayName: "Audi" 
+        },
+        {
+            value:"2", displayName: "BMW" 
+        },
+        {
+            value:"3", displayName: "Hyundai" 
+        }],
+        fruits:[
+            {
+               value: 1, displayName: "Mango"
+            },
+            {
+               value: 2, displayName: "Apple"
+            }
+        ]
+    }
+    var searchFields = [];
+    // to populate required search fields
+    $('.tab-content section').each(function(){
+        var $currentSection = $(this).attr('name');
+        if ($currentSection === 'media2') {
+            searchFields[$currentSection] = {
+                name: $currentSection,
+                searchData:{
+                    fieldOne: true
+                }               
+            }
+        }
+        else if ($currentSection !== 'media3') {
+            searchFields[$currentSection] = {
+            name: $currentSection,
+                searchData:{
+                    fieldOne: true,
+                    fieldTwo: true
+                }  
+            }
+        }
+        
+    });
+    console.log(searchFields);
+/*     var $carsType = $('.tab-content [name="media1"]').find('[name="cars"]');
+    var $fruitsType = $('.tab-content [name="media1"]').find('[name="fruits"]'); */
+    /* for (var index in jsonDataList.cars){
+        $carsType.append("<option value = " + jsonDataList.cars[index].value + ">" + jsonDataList.cars[index].displayName + "</option>");
+    } */
+    function populateOptions(optionField, optionsList) {
+        console.log("inside func");
+        for (var index in optionsList) {
+        optionField.append("<option value = " + optionsList[index].value + ">" + optionsList[index].displayName + "</option>");
+        }
+    }
+/*     populateOptions($carsType, jsonDataList.cars);
+    populateOptions($fruitsType, jsonDataList.fruits); */
+    $('.tab-content section').each(function(){
+        var $currentSection = $(this).attr('name');
+        console.log("each loop" + $currentSection);
+        var $carsType = $('.tab-content [name="' + $currentSection + '"]').find('[name="cars"]');
+        populateOptions($carsType, jsonDataList.cars);
+        var $fruitsType = $('.tab-content [name="' + $currentSection + '"]').find('[name="fruits"]');
+        populateOptions($fruitsType, jsonDataList.fruits);
+    });    
+    console.log(jsonDataList);
+    var searchResults = [];
+    $('.tab-content section').each(function(){
+        var $name = $(this).attr('name');
+        var mySearchResult = {
+            name: $name,
+            searchData:{}
+        };
+        var $selectField = $(this).find('select');
+        var $currentFieldName = $selectField.attr('name');
+        mySearchResult.searchData[ $currentFieldName ] = $selectField.value;
+        searchResults.push(mySearchResult);
+    });
+    console.log(searchResults);
+});
+</script>
+</body>
+</html>                            
